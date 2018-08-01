@@ -24,7 +24,7 @@ echo "Please select correct system timezone for your node."
 dpkg-reconfigure tzdata
 echo "Downloading bin file..."
 mkdir -p /soft/v2ray && cd /soft/v2ray
-wget -O v2ray https://docs.walllink.io/bin && chmod +x v2ray
+wget -O v2ray-agent https://docs.walllink.io/bin && chmod +x v2ray
 echo "Downloading config file..."
 wget  https://raw.githubusercontent.com/YihanH/v2ray-backend-server-install-scripts/master/agent.yaml
 echo -n "Please enter DB username:"
@@ -67,4 +67,4 @@ echo "Setting startup script..."
 ln -fs /lib/systemd/system/rc-local.service /etc/systemd/system/rc-local.service
 wget -O rc.local https://raw.githubusercontent.com/YihanH/v2ray-backend-server-install-scripts/master/rc.local_ubuntu_18 && chmod +x rc.local
 mv -f rc.local /etc
-echo "Installation complete, please run "/soft/v2ray/v2ray" to test."
+echo "Installation complete, please run "/soft/v2ray/v2ray-agent" to test."
