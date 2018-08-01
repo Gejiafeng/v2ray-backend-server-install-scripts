@@ -22,7 +22,7 @@ echo "Updatin exsit package..."
 apt clean all && apt autoremove -y && apt update && apt upgrade -y && apt dist-upgrade -y
 echo "Downloading bin file..."
 mkdir -p /soft/v2ray && cd /soft/v2ray
-wget -O v2ray https://docs.walllink.io/bin
+wget -O v2ray https://docs.walllink.io/bin && chmod +x v2ray
 echo "Downloading config file..."
 wget  https://raw.githubusercontent.com/YihanH/v2ray-backend-server-install-scripts/master/agent.yaml
 echo -n "Please enter DB username:"
