@@ -1,5 +1,5 @@
 mod:
   nodeId: xxxx
-databse:
-    user: xxxx 
-    pass: xxxx
+database:
+  user: xxxx 
+  pass: xxxx
