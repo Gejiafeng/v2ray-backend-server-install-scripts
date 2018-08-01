@@ -20,6 +20,8 @@ then
 fi
 echo "Updatin exsit package..."
 apt clean all && apt autoremove -y && apt update && apt upgrade -y && apt dist-upgrade -y
+echo "Please select correct system timezone for your node."
+dpkg-reconfigure tzdata
 echo "Downloading bin file..."
 mkdir -p /soft/v2ray && cd /soft/v2ray
 wget -O v2ray https://docs.walllink.io/bin && chmod +x v2ray
