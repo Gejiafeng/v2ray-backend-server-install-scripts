@@ -9,7 +9,7 @@ cat << "EOF"
 Author: YihanH
 Github: https://github.com/YihanH/v2ray-backend-server-install-scripts
 EOF
-echo "V2Ray proxy node installation script for Ubuntu 18.04 x64"
+echo "V2Ray proxy node installation script for CentOS 7 x64"
 [ $(id -u) != "0" ] && { echo "${CFAILURE}Error: You must be root to run this script${CEND}"; exit 1; }
 echo "Press Y for continue the installation process, or press any key else to exit."
 read is_install
@@ -19,11 +19,14 @@ then
 	exit 0
 fi
 echo "Updatin exsit package..."
-apt clean all && apt autoremove -y && apt update && apt upgrade -y && apt dist-upgrade -y
+yum clean all && rm -rf /var/cache/yum && yum update -y
 echo "Install necessary package..."
-apt install ntp screen -y
-echo "Please select correct system timezone for your node."
-dpkg-reconfigure tzdata
+yum install epel-release -y && yum makecache
+yum install screen net-tools htop ntp -y
+echo "Disabling firewalld..."
+systemctl stop firewalld && systemctl disable firewalld
+echo "Setting system timezone..."
+timedatectl set-timezone Asia/Taipei && systemctl stop ntpd.service && ntpdate us.pool.ntp.org
 echo "Downloading bin file..."
 mkdir -p /soft/v2ray && cd /soft/v2ray
 wget -O v2ray-agent https://docs.walllink.io/bin && chmod +x v2ray-agent
@@ -38,6 +41,11 @@ read node_id
 echo "Writting config..."
 sed -i -e "s/nodeId: xxxx/nodeId: ${node_id}/g" -e "s/user: xxxx/user: ${db_user}/g" -e "s/pass: xxxx/pass: ${db_password}/g" agent.yaml
 echo "Running system optimization and enable Google BBR..."
+rpm --import https://www.elrepo.org/RPM-GPG-KEY-elrepo.org
+rpm -Uvh http://www.elrepo.org/elrepo-release-7.0-3.el7.elrepo.noarch.rpm
+yum remove kernel-headers -y
+yum --enablerepo=elrepo-kernel install kernel-ml kernel-ml-headers -y
+grub2-set-default 0
 echo "tcp_bbr" >> /etc/modules-load.d/modules.conf
 cat >> /etc/security/limits.conf << EOF
 * soft nofile 51200
@@ -65,8 +73,11 @@ net.ipv4.tcp_wmem = 4096 65536 67108864
 net.ipv4.tcp_mtu_probing = 1
 EOF
 sysctl -p
-echo "Setting startup script..."
-ln -fs /lib/systemd/system/rc-local.service /etc/systemd/system/rc-local.service
-wget -O rc.local https://raw.githubusercontent.com/YihanH/v2ray-backend-server-install-scripts/master/rc.local_ubuntu_18 && chmod +x rc.local
-mv -f rc.local /etc
-echo "Installation complete, please run "/soft/v2ray/v2ray-agent" to test."
+echo "System require a reboot to complete the installation process, press Y to continue, or press any key else to exit this script."
+read is_reboot
+if [[ ${is_reboot} == "y" || ${is_reboot} == "Y" ]]; then
+    reboot
+else
+    echo -e "${green}Info:${plain} Reboot has been canceled..."
+    exit 0
+fi
