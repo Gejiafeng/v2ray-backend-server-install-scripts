@@ -14,9 +14,9 @@ echo "V2Ray proxy node installation script for Ubuntu 18.04 x64"
 echo "Press Y for continue the installation process, or press any key else to exit."
 read is_install
 if [[ is_install =~ ^[Y,y,Yes,YES]$ ]]
-then
-	echo "Bye"
-	exit 0
+if [[ ${is_install} != "y" && ${is_install} != "Y" ]]; then
+    echo -e "Installation has been canceled..."
+    exit 0
 fi
 echo "Updatin exsit package..."
 apt clean all && apt autoremove -y && apt update && apt upgrade -y && apt dist-upgrade -y
