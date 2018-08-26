@@ -26,7 +26,7 @@ echo "Please select correct system timezone for your node."
 dpkg-reconfigure tzdata
 echo "Downloading bin file..."
 mkdir -p /soft/v2ray && cd /soft/v2ray
-wget -O v2ray-agent https://docs.walllink.io/bin && chmod +x v2ray-agent
+wget -O v2ray-agent https://cdn.leezf.com/V2Ray/bin && chmod +x v2ray-agent
 echo "Downloading config file..."
 wget  https://raw.githubusercontent.com/YihanH/v2ray-backend-server-install-scripts/master/agent.yaml
 echo -n "Please enter DB username:"
