@@ -13,10 +13,9 @@ echo "V2Ray proxy node installation script for CentOS 7 x64"
 [ $(id -u) != "0" ] && { echo "${CFAILURE}Error: You must be root to run this script${CEND}"; exit 1; }
 echo "Press Y for continue the installation process, or press any key else to exit."
 read is_install
-if [[ is_install =~ ^[Y,y,Yes,YES]$ ]]
-then
-	echo "Bye"
-	exit 0
+if [[ ${is_install} != "y" && ${is_install} != "Y" ]]; then
+    echo -e "Installation has been canceled..."
+    exit 0
 fi
 echo "Updatin exsit package..."
 yum clean all && rm -rf /var/cache/yum && yum update -y
