@@ -13,7 +13,6 @@ echo "V2Ray proxy node installation script for Ubuntu 18.04 x64"
 [ $(id -u) != "0" ] && { echo "${CFAILURE}Error: You must be root to run this script${CEND}"; exit 1; }
 echo "Press Y for continue the installation process, or press any key else to exit."
 read is_install
-if [[ is_install =~ ^[Y,y,Yes,YES]$ ]]
 if [[ ${is_install} != "y" && ${is_install} != "Y" ]]; then
     echo -e "Installation has been canceled..."
     exit 0
