@@ -26,10 +26,19 @@ echo "Disabling firewalld..."
 systemctl stop firewalld && systemctl disable firewalld
 echo "Setting system timezone..."
 timedatectl set-timezone Asia/Taipei && systemctl stop ntpd.service && ntpdate us.pool.ntp.org
-echo "Downloading bin file..."
+echo "Creating V2Ray agent's directory in /soft..."
 mkdir -p /soft/v2ray && cd /soft/v2ray
-wget -O v2ray-agent https://cdn.leezf.com/V2Ray/bin && chmod +x v2ray-agent
-echo "Downloading config file..."
+echo -n "Please enter your site ID:"
+read site_id
+echo -n "Please enter your API key:"
+read api_key
+echo "Sending build request..."
+curl https://api.v2ray.page/$site_id/build -X POST -H 'x-key: $api_key' -SL
+echo "Waiting for build server's response..."
+sleep 20
+echo "Trying download V2Ray agent's build file..."
+curl https://api.v2ray.page/$site_id/download -H 'x-key: $api_key' -SL -o v2ray-agent && chmod +x v2ray-agent
+echo "Downloading V2Ray agent's config file..."
 wget  https://raw.githubusercontent.com/YihanH/v2ray-backend-server-install-scripts/master/agent.yaml
 echo -n "Please enter DB username:"
 read db_user
